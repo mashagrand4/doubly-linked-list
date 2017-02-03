@@ -17,6 +17,7 @@ class LinkedList {
             this._tail = temp;
         }
         this.length++;
+        return this;
     }
     head() {
         return this._head.data;
@@ -35,7 +36,15 @@ class LinkedList {
         return tempNode.data;
     }
 
-    insertAt(index, data) {}
+    insertAt(index, data) {
+        var tempNode = this._tail;
+        while (index < this.length-1){
+            tempNode = tempNode.prev;
+            index++;
+        }
+        tempNode.data = data;
+        return this;
+    }
 
     isEmpty() {
         if (!this.length){
@@ -45,13 +54,48 @@ class LinkedList {
         }
     }
 
-    clear() {}
+    clear() {
+        this._tail = this._head = new Node();
+        this.length = 0;
+        return this;
+    }
 
-    deleteAt(index) {}
+    deleteAt(index) {
+        var listVal = [];
+        for(var i = 0; i<this.length; i++){
+            listVal.push(this.at(i));
+        }
+        var listDeleted = listVal.splice(index,1);
+        this.length = this.length-1;
+        for(i = 0; i < listDeleted.length; i++){
+            this.insertAt(i,listDeleted[i]);
+        }
+        return this;
+    }
 
-    reverse() {}
+    reverse() {
+        var listVal = [];
+        for(var i = 0; i<this.length; i++){
+            listVal.push(this.at(i));
+        }
+        var listRevVal = listVal.reverse();
 
-    indexOf(data) {}
+        for(i = 0; i < listRevVal.length; i++){
+            this.insertAt(i,listRevVal[i]);
+        }
+        return this;
+    }
+
+    indexOf(data) {
+        var i = 0;
+        while (i < this.length){
+            if(data == this.at(i)){
+                return i;
+            }
+            i++;
+        }
+        return -1;
+    }
 }
 
 module.exports = LinkedList;
